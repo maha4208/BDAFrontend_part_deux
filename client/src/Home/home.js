@@ -1,6 +1,6 @@
 import React from "react";
 import "./home.css"
-import tastemaker_logo from "../";
+import tastemaker_logo from "../images/tastemaker_logo.svg";
 import spotify_logo from "../images/spotify_logo.svg";
 
 export default function Home() {

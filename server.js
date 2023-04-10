@@ -1,13 +1,17 @@
 const express = require('express');
+const path = require('path');
 const app = express();
-require('dotenv').config();
 
-app.get('/', (req, res) => {
-  const data = { message: 'Hello from the server!' };
-  res.json(data);
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`redirect_uri: ${process.env.REDIRECT_URI}`);
-});
+const port = process.env.PORT || 3000;
+app.listen(port);
+
+console.log(`Server listening on ${port}`);
