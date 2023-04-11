@@ -1,9 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./home.css"
 import tastemaker_logo from "../images/tastemaker_logo.svg";
 import spotify_logo from "../images/spotify_logo.svg";
 
 export default function Home() {
+    const [spotifyAuthUrl, setSpotifyAuthUrl] = useState('');
+
+    useEffect(() => {
+        async function fetchSpotifyAuthUrl() {
+            const response = await fetch('/server/auth');
+            const data = await response.json();
+            setSpotifyAuthUrl(data.auth_url);
+        }
+        fetchSpotifyAuthUrl();
+    }, []);
 
     return (
         <div className="home_page">
@@ -20,7 +30,9 @@ export default function Home() {
                         login and start making your taste.
                     </div>
                     <div className="link">
-                        <img src={spotify_logo} alt="Click Here to Authenticate Your Spotify!" />
+                        <a href={spotifyAuthUrl}>
+                            <img src={spotify_logo} alt="Click Here to Authenticate Your Spotify!" />
+                        </a>
                     </div>
                 </div>
             </main>
