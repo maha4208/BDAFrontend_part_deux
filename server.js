@@ -116,20 +116,20 @@ app.get('*', (req, res) => {
 
 
 //make a playlist will take songs and playlist name and create everything instead of 2 endpoints
-app.get("/makePlaylist/:playlistName/:songs/:token", async(req,res) => {
-  const id = await (makePlaylist(req.params.playlistName, req.params.token))
-  const addSongs = await addToPlaylist(id,req.params.songs, req.params.token)
+app.get("/makePlaylist/:playlistName/:songs", async(req,res) => {
+  const id = await (makePlaylist(req.params.playlistName, req.session.access_token))
+  const addSongs = await addToPlaylist(id,req.params.songs, req.session.access_token)
   res.send(id)
 })
 
 //gets song id's from a playlist and returns an id string
-app.get("/getPlaylistTracks/:id/:token", async (req, res) => {
+app.get("/getPlaylistTracks/:idn", async (req, res) => {
   try {
     const playlistData = await axios.get(
       "https://api.spotify.com/v1/playlists/" + req.params.id + "/tracks",
       {
         headers: {
-          Authorization: "Bearer " + req.params.token,
+          Authorization: "Bearer " + req.session.access_token,
         },
       }
     );
@@ -150,7 +150,7 @@ app.get("/getPlaylistTracks/:id/:token", async (req, res) => {
       "https://api.spotify.com/v1/audio-features?ids=" + IdString,
       {
         headers: {
-          Authorization: "Bearer " + req.params.token,
+          Authorization: "Bearer " + req.session.access_token,
         },
       }
     );
