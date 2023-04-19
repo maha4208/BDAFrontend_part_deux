@@ -1,0 +1,58 @@
+.rec_header_and_input {
+    display:flex;
+    flex-direction:row;
+    background-color:white;
+    height: 10%;
+    align-items: center;
+    justify-content: center;
+    height:100px;
+}
+
+.logo_2 {
+    width:30%;
+    height:auto;
+    padding-right:80%;
+}
+
+.my_form {
+    background-color: #B23B3B;
+    border: 2px solid black;
+    width: 800px;
+    display: flex;
+    justify-content: center;
+    margin-right:40px;
+  }
+  
+  .my_form label,
+  .my_form input,
+  .my_form button {
+    background-color: white;
+    border: 1px solid black;
+    margin: 10px;
+    width: 40%;
+    box-sizing: border-box;
+  }
+  
+  .my_form label {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    justify-content: center;
+    font-weight:bolder;
+  }
+  
+  .my_form input {
+    flex: 1;
+    padding: 5px;
+  }
+  
+  .my_form button {
+    width: auto;
+    background-color:black;
+    color:white;
+    margin: 0;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    font-weight:bolder;
+  }

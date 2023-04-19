@@ -4,17 +4,8 @@ import tastemaker_logo from "../images/tastemaker_logo.svg";
 import spotify_logo from "../images/spotify_logo.svg";
 
 export default function Home() {
-    const [spotifyAuthUrl, setSpotifyAuthUrl] = useState('');
-
-    useEffect(() => {
-        async function fetchSpotifyAuthUrl() {
-            const response = await fetch('/server/auth');
-            const data = await response.json();
-            setSpotifyAuthUrl(data.auth_url);
-        }
-        fetchSpotifyAuthUrl();
-    }, []);
-
+    const spotifyAuthUrl = `https://accounts.spotify.com/authorize?client_id=19b24e60a9c645d0805d8e68a5fcdaf6&response_type=code&redirect_uri=http://localhost:3000/callback&scope=user-library-read`
+    console.log(spotifyAuthUrl)
     return (
         <div className="home_page">
             <header className = "header">
