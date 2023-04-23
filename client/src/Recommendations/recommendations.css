@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .metricForm {
+    padding: 10px;
+  }
+  
+  .container > div {
+    flex: 1;
+    margin: 10px;
+    min-height: 100px;
+    background-color: lightblue;
+    border: 1px solid black;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+  
+  .secondDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .editForm {
+    width: 80%;
+  }
+  
