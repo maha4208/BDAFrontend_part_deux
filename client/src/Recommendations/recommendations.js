@@ -7,7 +7,7 @@ import { EditMetricForm } from "../sliderForm/EditMetricForm";
 export default function Recommendations() {
     return (
 <div className="home_page">
-  <p>recommendations</p>
+  <p>Your Playlist</p>
   <div className="container">
     <div className="metricForm">First Div</div>
     <div className="secondDiv">

@@ -6,10 +6,11 @@ export function StreamGraph(data){
       console.log(Data)
       return(
         <ResponsiveStream
-          height={400}
+          height={300}
+          borderWidth={10}
           data={Data}
           keys={['valence', 'danceability','acousticness', 'instrumentalness', 'speechiness', 'energy', 'liveness']}
-          margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+          margin={{ top: 50, right: 110, bottom: 100, left: 10 }}
           axisTop={null}
           axisRight={null}
           axisBottom={null}
@@ -22,6 +23,28 @@ export function StreamGraph(data){
           animate={true}
           motionStiffness={90}
           motionDamping={15}
+          legends={[
+            {
+                anchor: 'bottom-right',
+                direction: 'column',
+                translateX: 100,
+                itemWidth: 80,
+                itemHeight: 20,
+                itemTextColor: '#999999',
+                symbolSize: 12,
+                symbolShape: 'circle',
+                effects: [
+                    {
+                        on: 'hover',
+                        style: {
+                            itemTextColor: '#000000'
+                        }
+                    }
+                ]
+            }
+        ]}
+          
+
         />
       );
   }
