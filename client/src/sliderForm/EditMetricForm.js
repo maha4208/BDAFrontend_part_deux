@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export function EditMetricForm() {
 
+  //let Data = data.data.liveness
   const [liveness, setLiveness] = useState(0);
   const [energy, setEnergy] = useState(0);
   const [danceability, setDanceability] = useState(0);
@@ -106,7 +107,7 @@ export function EditMetricForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography id="input-slider" gutterBottom>
-            Valence: {danceability}
+            Valence: {valence}
           </Typography>
           <Slider
             value={valence}

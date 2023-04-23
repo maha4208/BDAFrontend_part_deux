@@ -20,9 +20,9 @@ export function StreamGraph(data){
           colors={{ scheme: 'paired' }}
           fillOpacity={0.85}
           borderColor={{ theme: 'background' }}
-          animate={true}
-          motionStiffness={90}
-          motionDamping={15}
+          //animate={true}
+          motionStiffness={1000}
+          motionDamping={15000}
           legends={[
             {
                 anchor: 'bottom-right',
