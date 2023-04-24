@@ -56,3 +56,46 @@
     box-sizing: border-box;
     font-weight:bolder;
   }
+
+  .main {
+    display:flex;
+    flex-direction:row;
+    flex:1;
+  }
+
+  .box {
+    flex:1;
+    height:45vh;
+    display:flex;
+    flex-direction:column;
+    background-color:white;
+    margin: 20p;
+    justify-content:flex-start;
+    align-items:center;
+    margin: 20px;
+    overflow:scroll;
+  }
+
+  .box_title {
+    font-size:medium;
+    border-bottom: 1px solid #000; /* Add underline using a bottom border */
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    margin-top:10px;
+  }
+
+  .display {
+    background-color:#000;
+    color:white;
+    font-size:x-small;
+    height:20px;
+    width:60%;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-around;
+    align-items:center;
+    padding:5px;
+    margin-right:20px;
+    margin-left:20px;
+    margin-top:5px;
+  }

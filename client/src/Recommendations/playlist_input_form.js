@@ -10,10 +10,28 @@ export default function PlaylistInputForm ({
     artists,
     ids,
     list_id,
+    acousticness,
+    danceability,
+    energy,
+    instrumentalness,
+    liveness,
+    loudness,
+    speechiness,
+    tempo,
+    valence,
     onSongsUpdate,
     onArtistsUpdate,
     onIdsUpdate,
     onListIdUpdate,
+    onAcousticnessUpdate,
+    onDanceabilityUpdate,
+    onEnergyUpdate,
+    onInstrumentalnessUpdate,
+    onLivenessUpdate,
+    onLoudnessUpdate,
+    onSpeechinessUpdate,
+    onTempoUpdate,
+    onValenceUpdate,
 }) {
     
     const [playlist_id, setPlaylist_id] = useState('');
@@ -62,6 +80,15 @@ export default function PlaylistInputForm ({
                 onArtistsUpdate(data.new_playlist.artist)
                 onIdsUpdate(data.new_playlist.id)
                 onListIdUpdate(data.user_playlist_id)
+                onAcousticnessUpdate(data.sum_metrics.acousticness)
+                onDanceabilityUpdate(data.sum_metrics.danceability)
+                onEnergyUpdate(data.sum_metrics.energy)
+                onInstrumentalnessUpdate(data.sum_metrics.instrumentalness)
+                onLivenessUpdate(data.sum_metrics.liveness)
+                onLoudnessUpdate(data.sum_metrics.loudness)
+                onSpeechinessUpdate(data.sum_metrics.speechiness)
+                onTempoUpdate(data.sum_metrics.speechiness)
+                onValenceUpdate(data.sum_metrics.valence)
             })
             .catch (error => {
                 console.error(error)
