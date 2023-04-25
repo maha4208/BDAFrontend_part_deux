@@ -1,9 +1,12 @@
-import React, {useState, useEffect} from "react";
-import {useLocation} from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom"
 import "./recommendations.css"
 import tastemaker_logo from "../images/tastemaker_logo.svg"
 import PlaylistInputForm from "./playlist_input_form"
 import SongArtistDisplay from "./song_artist_display";
+import { EditMetricForm } from "../SliderForm/EditMetricForm";
+import { StreamGraph } from "../StreamGraph/StreamGraph";
+import Data from './sampleData.json'
 
 export default function Recommendations() {
 
@@ -16,7 +19,7 @@ export default function Recommendations() {
     const [playlist_id, set_playlist_id] = useState('')
     const [track_ids, set_track_ids] = useState([])
     const [acousticness, set_acousticness] = useState(0)
-    const [danceability,set_danceability] = useState(0)
+    const [danceability, set_danceability] = useState(0)
     const [energy, set_energy] = useState(0)
     const [instrumentalness, set_instrumentalness] = useState(0)
     const [liveness, set_liveness] = useState(0)
@@ -24,6 +27,7 @@ export default function Recommendations() {
     const [speechiness, set_speechiness] = useState(0)
     const [tempo, set_tempo] = useState(0)
     const [valence, set_valence] = useState(0)
+
 
     const handleSongsUpdate = (newData) => {
         set_song_names(newData)
@@ -90,47 +94,90 @@ export default function Recommendations() {
         console.log(valence)
     }
 
-    return (    
+    let averageMetricData = {
+        'valence': valence,
+        'danceability': danceability,
+        'acousticness': acousticness,
+        'instrumentalness':instrumentalness,
+        'speechiness': speechiness,
+        'energy': energy,
+        'liveness': liveness
+    }
+
+    return (
         <>
             <div className="rec_header_and_input">
-            <div className="mini_logo">
-                <img src={tastemaker_logo} className="logo_2" alt="TASTEMAKER" />
+                <div className="mini_logo">
+                    <img src={tastemaker_logo} className="logo_2" alt="TASTEMAKER" />
+                </div>
+                <div className="playlist_input">
+                    <PlaylistInputForm
+                        songs={song_names}
+                        artists={artist_names}
+                        ids={track_ids}
+                        list_id={playlist_id}
+                        onSongsUpdate={handleSongsUpdate}
+                        onArtistsUpdate={handleArtistsUpdate}
+                        onIdsUpdate={handleIdsUpdate}
+                        onListIdUpdate={handleListIdUpdate}
+                        onAcousticnessUpdate={handleAcousticnessUpdate}
+                        onDanceabilityUpdate={handleDanceabilityUpdate}
+                        onEnergyUpdate={handleEnergyUpdate}
+                        onInstrumentalnessUpdate={handleInstrumentalnessUpdate}
+                        onLivenessUpdate={handleLivenessUpdate}
+                        onLoudnessUpdate={handleLoudnessUpdate}
+                        onSpeechinessUpdate={handleSpeechinessUpdate}
+                        onTempoUpdate={handleTempoUpdate}
+                        onValenceUpdate={handleValenceUpdate}
+                    />
+                </div>
             </div>
-            <div className="playlist_input">
-                <PlaylistInputForm 
-                    songs={song_names} 
-                    artists={artist_names} 
-                    ids={track_ids} 
-                    list_id={playlist_id} 
-                    onSongsUpdate={handleSongsUpdate}
-                    onArtistsUpdate={handleArtistsUpdate}
-                    onIdsUpdate={handleIdsUpdate}
-                    onListIdUpdate={handleListIdUpdate}
-                    onAcousticnessUpdate={handleAcousticnessUpdate}
-                    onDanceabilityUpdate={handleDanceabilityUpdate}
-                    onEnergyUpdate={handleEnergyUpdate}
-                    onInstrumentalnessUpdate={handleInstrumentalnessUpdate}
-                    onLivenessUpdate={handleLivenessUpdate}
-                    onLoudnessUpdate={handleLoudnessUpdate}
-                    onSpeechinessUpdate={handleSpeechinessUpdate}
-                    onTempoUpdate={handleTempoUpdate}
-                    onValenceUpdate={handleValenceUpdate}
+            <div className="main">
+                <div className="box">
+                    <h1 className="box_title">Your Tastemaker Playlist</h1>
+                    {song_names.map((item, index) => {
+                        return (
+                            <SongArtistDisplay key={index} song={item} artist={artist_names[index]} />
+                        );
+                    })}
+                </div>
+                <div className="box2">
+                    <h1 className="box_title">Modify Your Playlist</h1>
+                    <div className="metricForm">
+                        <EditMetricForm
+                            liveness={liveness}
+                            energy={energy}
+                            danceability={danceability}
+                            valence={valence}
+                            instrumentalness={instrumentalness}
+                            acousticness={acousticness}
+                            speechiness={speechiness}
+                            onSongsUpdate={handleSongsUpdate}
+                            onArtistsUpdate={handleArtistsUpdate}
+                            onIdsUpdate={handleIdsUpdate}
+                            onListIdUpdate={handleListIdUpdate}
+                            onAcousticnessUpdate={handleAcousticnessUpdate}
+                            onDanceabilityUpdate={handleDanceabilityUpdate}
+                            onEnergyUpdate={handleEnergyUpdate}
+                            onInstrumentalnessUpdate={handleInstrumentalnessUpdate}
+                            onLivenessUpdate={handleLivenessUpdate}
+                            onLoudnessUpdate={handleLoudnessUpdate}
+                            onSpeechinessUpdate={handleSpeechinessUpdate}
+                            onTempoUpdate={handleTempoUpdate}
+                            onValenceUpdate={handleValenceUpdate}/>
+                    </div>
+                </div>
+            </div>
+            <StreamGraph
+                data={Data}
+                // valence={valence}
+                // danceability={danceability}
+                // acousticness={acousticness}
+                // instrumentalness={instrumentalness}
+                // speechiness={speechiness}
+                // energy={energy}
+                // liveness={liveness}
                 />
-            </div>
-        </div>
-        <div className="main">
-            <div className="box">
-                <h1 className="box_title">Your Tastemaker Playlist</h1>
-                {song_names.map((item, index) => {
-                    return (
-                        <SongArtistDisplay key={index} song={item} artist={artist_names[index]} />
-                    );
-                })}
-            </div>
-            <div className="box">
-                <h1 className="box_title">Modify Your Playlist</h1>
-            </div>
-        </div>
         </>
     )
 }

@@ -76,6 +76,18 @@
     overflow:scroll;
   }
 
+  .box2 {
+    flex:1;
+    height:45vh;
+    display:flex;
+    flex-direction:column;
+    background-color:white;
+    margin: 20p;
+    justify-content:flex-start;
+    align-items:center;
+    margin: 20px;
+  }
+
   .box_title {
     font-size:medium;
     border-bottom: 1px solid #000; /* Add underline using a bottom border */
@@ -98,4 +110,8 @@
     margin-right:20px;
     margin-left:20px;
     margin-top:5px;
+  }
+
+  .metricForm {
+    padding: 15px;
   }
