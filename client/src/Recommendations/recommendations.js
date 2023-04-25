@@ -31,67 +31,54 @@ export default function Recommendations() {
 
     const handleSongsUpdate = (newData) => {
         set_song_names(newData)
-        console.log(song_names)
     }
 
     const handleArtistsUpdate = (newData) => {
         set_artist_names(newData)
-        console.log(artist_names)
     }
 
     const handleIdsUpdate = (newData) => {
         set_track_ids(newData)
-        console.log(track_ids)
     }
 
     const handleListIdUpdate = (newData) => {
         set_playlist_id(newData)
-        console.log(playlist_id)
     }
 
     const handleAcousticnessUpdate = (newData) => {
         set_acousticness(newData)
-        console.log(acousticness)
     }
 
     const handleDanceabilityUpdate = (newData) => {
         set_danceability(newData)
-        console.log(danceability)
     }
 
     const handleEnergyUpdate = (newData) => {
         set_energy(newData)
-        console.log(energy)
     }
 
     const handleInstrumentalnessUpdate = (newData) => {
         set_instrumentalness(newData)
-        console.log(instrumentalness)
     }
 
     const handleLivenessUpdate = (newData) => {
         set_liveness(newData)
-        console.log(liveness)
     }
 
     const handleLoudnessUpdate = (newData) => {
         set_loudness(newData)
-        console.log(loudness)
     }
 
     const handleSpeechinessUpdate = (newData) => {
         set_speechiness(newData)
-        console.log(speechiness)
     }
 
     const handleTempoUpdate = (newData) => {
         set_tempo(newData)
-        console.log(tempo)
     }
 
     const handleValenceUpdate = (newData) => {
         set_valence(newData)
-        console.log(valence)
     }
 
     let averageMetricData = {
@@ -102,6 +89,41 @@ export default function Recommendations() {
         'speechiness': speechiness,
         'energy': energy,
         'liveness': liveness
+    }
+
+    const createPlaylist = (authCode, ids) => {
+        // Create playlist endpoint
+        const endpoint = 'https://api.spotify.com/v1/me/playlists';
+
+        // Create playlist request body
+        const requestBody = {
+            name: 'Your Tastemaker Playlist', // Replace with your desired playlist name
+            public: true, // Set to true if you want the playlist to be public, false if private
+            description: 'Your custom playlist, consider your tastes made', // Replace with your desired playlist description
+            tracks: ids.map(id => ({ uri: `spotify:track:${id}` })) // Convert track IDs to Spotify track URIs
+        };
+
+        // Make POST request to create playlist
+        fetch(endpoint, {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${authCode}`,
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to create playlist');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data); // Access the response data, which includes the created playlist information
+        })
+        .catch(error => {
+            console.error(error); // Handle any errors that may occur during the API request
+        });
     }
 
     return (
@@ -146,6 +168,9 @@ export default function Recommendations() {
                     <div className="metricForm">
                         <EditMetricForm
                             liveness={liveness}
+                            loudness={loudness}
+                            tempo={tempo}
+                            id={playlist_id}
                             energy={energy}
                             danceability={danceability}
                             valence={valence}
@@ -167,6 +192,9 @@ export default function Recommendations() {
                             onValenceUpdate={handleValenceUpdate}/>
                     </div>
                 </div>
+            </div>
+            <div>
+                <button className="make_playlist" onClick={() => createPlaylist(authorizationCode, track_ids)}>Add Playlist to Library</button>
             </div>
             <StreamGraph
                 data={Data}

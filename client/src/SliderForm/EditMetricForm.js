@@ -7,6 +7,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export function EditMetricForm(props) {
 
+  const loudness = props.loudness
+  const tempo = props.tempo
+  const original_id =props.id
   const [liveness, setLiveness] = useState(props.liveness);
   const [energy, setEnergy] = useState(props.energy);
   const [danceability, setDanceability] = useState(props.danceability);
@@ -61,18 +64,44 @@ export function EditMetricForm(props) {
   };
 
   const handleButtonClick = () => {
-    const formData = JSON.stringify({
-      liveness: liveness,
-      energy: energy,
-      danceability: danceability,
-      valence: valence,
-      instrumentalness: instrumentalness,
-      acousticness: acousticness,
-      speechiness: speechiness
-    });
-    console.log(formData)
+    const request = "http://127.0.0.1:8080/metrics?original_id="+original_id+"&valence="+valence+"&danceability="+danceability+"&instrumentalness="+instrumentalness+"&acousticness="+acousticness+"&liveness="+liveness+"&energy="+energy+"&loudness="+loudness+"&tempo="+tempo+"&speechiness="+speechiness
+    console.log(request)
 
-    //add post fetch here
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    fetch(request, options)
+    .then (response => {
+      if(!response.ok) {
+        throw new Error("fetch failed")
+      }
+      else{
+        return response.clone().json()
+      }
+    })
+    .then (data => {
+      console.log(data)
+      props.onSongsUpdate(data.new_playlist.name)
+      props.onArtistsUpdate(data.new_playlist.artist)
+      props.onIdsUpdate(data.new_playlist.id)
+      props.onListIdUpdate(data.user_playlist_id)
+      props.onAcousticnessUpdate(data.sum_metrics.acousticness)
+      props.onDanceabilityUpdate(data.sum_metrics.danceability)
+      props.onEnergyUpdate(data.sum_metrics.energy)
+      props.onInstrumentalnessUpdate(data.sum_metrics.instrumentalness)
+      props.onLivenessUpdate(data.sum_metrics.liveness)
+      props.onLoudnessUpdate(data.sum_metrics.loudness)
+      props.onSpeechinessUpdate(data.sum_metrics.speechiness)
+      props.onTempoUpdate(data.sum_metrics.speechiness)
+      props.onValenceUpdate(data.sum_metrics.valence)
+    })
+    .catch(e => {
+      console.error(e)
+    })
   }
 
   return (

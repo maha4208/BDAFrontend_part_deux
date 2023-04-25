@@ -65,7 +65,6 @@ export default function PlaylistInputForm ({
         //making the request
         fetch(request, options)
             .then (response => {
-                console.log(response)
                 if(!response.ok) {
                     throw new Error("fetch failed")
                 }
