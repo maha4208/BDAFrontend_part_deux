@@ -4,7 +4,7 @@ import tastemaker_logo from "../images/tastemaker_logo.svg";
 import spotify_logo from "../images/spotify_logo.svg";
 
 export default function Home() {
-    const spotifyAuthUrl = `https://accounts.spotify.com/authorize?client_id=19b24e60a9c645d0805d8e68a5fcdaf6&response_type=code&redirect_uri=http://localhost:3000/callback&scope=user-library-read`
+    const spotifyAuthUrl = `https://accounts.spotify.com/authorize?client_id=19b24e60a9c645d0805d8e68a5fcdaf6&response_type=code&redirect_uri=http://localhost:3000/callback&scope=playlist-read-private%20playlist-read-collaborative%20playlist-modify-private%20playlist-modify-public`
     console.log(spotifyAuthUrl)
     return (
         <div className="home_page">
