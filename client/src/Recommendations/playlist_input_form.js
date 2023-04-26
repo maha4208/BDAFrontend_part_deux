@@ -70,6 +70,7 @@ export default function PlaylistInputForm ({
         const path = spotifyUrl.pathname; 
         const id = path.split('/').pop();
         console.log(id)
+        //d=<id>&token=<token
         const request = "http://127.0.0.1:8080/playlist/"+id
         console.log(request)
 
