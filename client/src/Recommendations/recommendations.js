@@ -27,7 +27,11 @@ export default function Recommendations() {
     const [speechiness, set_speechiness] = useState(0)
     const [tempo, set_tempo] = useState(0)
     const [valence, set_valence] = useState(0)
+    const [metricObject, setMetricObject] = useState([])
 
+    const handleMetricObjectUpdate = (newData) => {
+        setMetricObject(newData)
+    }
 
     const handleSongsUpdate = (newData) => {
         set_song_names(newData)
@@ -81,15 +85,21 @@ export default function Recommendations() {
         set_valence(newData)
     }
 
-    let averageMetricData = {
-        'valence': valence,
-        'danceability': danceability,
-        'acousticness': acousticness,
-        'instrumentalness':instrumentalness,
-        'speechiness': speechiness,
-        'energy': energy,
-        'liveness': liveness
-    }
+    function convertJsonToList(json) {
+        const keys = Object.keys(json);
+        const numElements = json[keys[0]].length;
+        const result = [];
+      
+        for (let i = 0; i < numElements; i++) {
+          const obj = {};
+          for (let j = 0; j < keys.length; j++) {
+            obj[keys[j]] = json[keys[j]][i];
+          }
+          result.push(obj);
+        }
+      
+        return result;
+      }
 
     const createPlaylist = (authCode, ids) => {
         // Create playlist endpoint
@@ -151,6 +161,8 @@ export default function Recommendations() {
                         onSpeechinessUpdate={handleSpeechinessUpdate}
                         onTempoUpdate={handleTempoUpdate}
                         onValenceUpdate={handleValenceUpdate}
+                        onMetricUpdate={handleMetricObjectUpdate}
+                        convertJsonToList={convertJsonToList}
                     />
                 </div>
             </div>
@@ -189,6 +201,8 @@ export default function Recommendations() {
                             onLoudnessUpdate={handleLoudnessUpdate}
                             onSpeechinessUpdate={handleSpeechinessUpdate}
                             onTempoUpdate={handleTempoUpdate}
+                            convertJsonToList={convertJsonToList}
+                            onMetricUpdate={handleMetricObjectUpdate}
                             onValenceUpdate={handleValenceUpdate}/>
                     </div>
                 </div>
@@ -196,16 +210,12 @@ export default function Recommendations() {
             <div>
                 <button className="make_playlist" onClick={() => createPlaylist(authorizationCode, track_ids)}>Add Playlist to Library</button>
             </div>
+            <div style = {{height:300, backgroundColor: "white", padding: 20, margin:20}}>
+            <h1 className="box_title">Your Playlist Steam Graph</h1>
             <StreamGraph
-                data={Data}
-                // valence={valence}
-                // danceability={danceability}
-                // acousticness={acousticness}
-                // instrumentalness={instrumentalness}
-                // speechiness={speechiness}
-                // energy={energy}
-                // liveness={liveness}
+                data={metricObject}
                 />
+            </div>
         </>
     )
 }

@@ -85,6 +85,7 @@ export function EditMetricForm(props) {
     })
     .then (data => {
       console.log(data)
+      props.onMetricUpdate(props.convertJsonToList(data.new_playlist))
       props.onSongsUpdate(data.new_playlist.name)
       props.onArtistsUpdate(data.new_playlist.artist)
       props.onIdsUpdate(data.new_playlist.id)
