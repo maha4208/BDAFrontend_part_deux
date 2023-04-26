@@ -56,6 +56,7 @@ export default function PlaylistInputForm ({
         const id = path.split('/').pop();
         console.log(id)
         const request = "http://127.0.0.1:8080/playlist/"+id+'%2c'+token
+        //const request = "http://127.0.0.1:8080/playlist/"+id
         console.log(request)
 
 
@@ -76,6 +77,7 @@ export default function PlaylistInputForm ({
                 }
             })
             .then (data => {
+                console.log(data)
                 onMetricUpdate(convertJsonToList(data.new_playlist))
                 onSongsUpdate(data.new_playlist.name)
                 onArtistsUpdate(data.new_playlist.artist)

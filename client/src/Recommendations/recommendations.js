@@ -27,10 +27,11 @@ export default function Recommendations() {
     const [speechiness, set_speechiness] = useState(0)
     const [tempo, set_tempo] = useState(0)
     const [valence, set_valence] = useState(0)
-    const [metricObject, setMetricObject] = useState([])
+    const [playlistObject, setPlaylistObject] = useState([])
+    const [newPlaylistId, setNewPlaylistId] = useState();
 
     const handleMetricObjectUpdate = (newData) => {
-        setMetricObject(newData)
+        setPlaylistObject(newData)
     }
 
     const handleSongsUpdate = (newData) => {
@@ -119,46 +120,79 @@ export default function Recommendations() {
           }
         };
 
-
-
-
-
-
-    const createPlaylist = async (authCode, ids) => {
-        // Create playlist endpoint
-        let id = await fetchProfile();
-        console.log(id)
-        const endpoint = 'https://api.spotify.com/v1/users/' + id + '/playlists';
-        // Create playlist request body
-        const requestBody = {
-            name: 'Your Tastemaker Playlist', // Replace with your desired playlist name
-            public: true, // Set to true if you want the playlist to be public, false if private
-            description: 'Your custom playlist, consider your tastes made', // Replace with your desired playlist description
-            //tracks: ids.map(id => ({ uri: `spotify:track:${id}` })) // Convert track IDs to Spotify track URIs
-        };
-
-        // Make POST request to create playlist
-        fetch(endpoint, {
-            method: 'POST',
-            headers: {
-            'Authorization': `Bearer ${authCode}`,
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to create playlist');
+        const addPlaylistHandler = async (authCode) => {
+            const newPI = await createPlaylist(authCode)
+            setNewPlaylistId(newPI)
+          }
+          
+          useEffect(() => {
+            async function addSongsToPlaylist() {
+              if (newPlaylistId !== undefined) {
+                console.log(newPlaylistId);
+                await addSongToPlaylist(token, newPlaylistId, convertIdsToUris(playlistObject.id));
+              }
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data); // Access the response data, which includes the created playlist information
-        })
-        .catch(error => {
-            console.error(error); // Handle any errors that may occur during the API request
-        });
-    }
+          
+            addSongsToPlaylist();
+          }, [newPlaylistId]);
+          
+          const createPlaylist = async (authCode) => {
+            // Create playlist endpoint
+            let profileId = await fetchProfile();
+            let newPlaylistId = ''
+            const endpoint = 'https://api.spotify.com/v1/users/' + profileId + '/playlists';
+            // Create playlist request body
+            const requestBody = {
+                name: 'Your Tastemaker Playlist', // Replace with your desired playlist name
+                public: true, // Set to true if you want the playlist to be public, false if private
+                description: 'Your custom playlist, consider your tastes made', // Replace with your desired playlist description
+                //tracks: ids.map(id => ({ uri: `spotify:track:${id}` })) // Convert track IDs to Spotify track URIs
+            };
+          
+            // Make POST request to create playlist
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                'Authorization': `Bearer ${authCode}`,
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to create playlist');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if(data !== undefined){
+                    setNewPlaylistId(data.id);
+                } // Access the response data, which includes the created playlist information
+            })
+            .catch(error => {
+                console.error(error); // Handle any errors that may occur during the API request
+            });
+          }
+          
+          const convertIdsToUris = (ids) => {
+            return ids.map(id => `spotify:track:${id}`);
+          };
+          
+          const addSongToPlaylist = async (accessToken, playlistId, trackUris) => {
+            const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                uris: trackUris
+              })
+            });
+            const data = await response.json();
+            console.log('songs added')
+          }
+
 
     return (
         <>
@@ -233,12 +267,12 @@ export default function Recommendations() {
                 </div>
             </div>
             <div>
-                <button className="make_playlist" onClick={() => createPlaylist(token, track_ids)}>Add Playlist to Library</button>
+                <button className="make_playlist" onClick={() => addPlaylistHandler(token)}>Add Playlist to Library</button>
             </div>
             <div style = {{height:300, backgroundColor: "white", padding: 20, margin:20}}>
             <h1 className="box_title">Your Playlist Steam Graph</h1>
             <StreamGraph
-                data={metricObject}
+                data={playlistObject}
                 />
             </div>
         </>
