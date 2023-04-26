@@ -41,6 +41,7 @@ useEffect(() => {
   }
 }, [accessToken]);
 
+navigate(`/`);
 return null;
 }
 
