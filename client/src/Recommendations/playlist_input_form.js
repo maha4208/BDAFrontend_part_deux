@@ -31,7 +31,8 @@ export default function PlaylistInputForm ({
     onTempoUpdate,
     onValenceUpdate,
     onMetricUpdate,
-    convertJsonToList
+    convertJsonToList,
+    token
 }) {
     
     const [playlist_id, setPlaylist_id] = useState('');
@@ -42,22 +43,6 @@ export default function PlaylistInputForm ({
     function handlePlaylistChange(event) {
         setPlaylist_id(event.target.value);
     }
-
-    // function convertJsonToList(json) {
-    //     const keys = Object.keys(json);
-    //     const numElements = json[keys[0]].length;
-    //     const result = [];
-      
-    //     for (let i = 0; i < numElements; i++) {
-    //       const obj = {};
-    //       for (let j = 0; j < keys.length; j++) {
-    //         obj[keys[j]] = json[keys[j]][i];
-    //       }
-    //       result.push(obj);
-    //     }
-      
-    //     return result;
-    //   }
 
     function handleSubmit(event) { 
         
@@ -70,8 +55,7 @@ export default function PlaylistInputForm ({
         const path = spotifyUrl.pathname; 
         const id = path.split('/').pop();
         console.log(id)
-        //d=<id>&token=<token
-        const request = "http://127.0.0.1:8080/playlist/"+id
+        const request = "http://127.0.0.1:8080/playlist/"+id+'%2c'+token
         console.log(request)
 
 

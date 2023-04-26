@@ -12,7 +12,7 @@ export default function Recommendations() {
 
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const authorizationCode = params.get('authorizationCode');
+    const token = params.get('token');
 
     const [song_names, set_song_names] = useState([])
     const [artist_names, set_artist_names] = useState([])
@@ -101,16 +101,40 @@ export default function Recommendations() {
         return result;
       }
 
-    const createPlaylist = (authCode, ids) => {
-        // Create playlist endpoint
-        const endpoint = 'https://api.spotify.com/v1/me/playlists';
 
+        const fetchProfile = async () => {
+          try {
+            const response = await fetch('https://api.spotify.com/v1/me', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (!response.ok) {
+              throw new Error('Failed to fetch profile');
+            }
+            const data = await response.json();
+            return data.id
+          } catch (error) {
+            console.log(error.message);
+          }
+        };
+
+
+
+
+
+
+    const createPlaylist = async (authCode, ids) => {
+        // Create playlist endpoint
+        let id = await fetchProfile();
+        console.log(id)
+        const endpoint = 'https://api.spotify.com/v1/users/' + id + '/playlists';
         // Create playlist request body
         const requestBody = {
             name: 'Your Tastemaker Playlist', // Replace with your desired playlist name
             public: true, // Set to true if you want the playlist to be public, false if private
             description: 'Your custom playlist, consider your tastes made', // Replace with your desired playlist description
-            tracks: ids.map(id => ({ uri: `spotify:track:${id}` })) // Convert track IDs to Spotify track URIs
+            //tracks: ids.map(id => ({ uri: `spotify:track:${id}` })) // Convert track IDs to Spotify track URIs
         };
 
         // Make POST request to create playlist
@@ -163,6 +187,7 @@ export default function Recommendations() {
                         onValenceUpdate={handleValenceUpdate}
                         onMetricUpdate={handleMetricObjectUpdate}
                         convertJsonToList={convertJsonToList}
+                        token={token}
                     />
                 </div>
             </div>
@@ -208,7 +233,7 @@ export default function Recommendations() {
                 </div>
             </div>
             <div>
-                <button className="make_playlist" onClick={() => createPlaylist(authorizationCode, track_ids)}>Add Playlist to Library</button>
+                <button className="make_playlist" onClick={() => createPlaylist(token, track_ids)}>Add Playlist to Library</button>
             </div>
             <div style = {{height:300, backgroundColor: "white", padding: 20, margin:20}}>
             <h1 className="box_title">Your Playlist Steam Graph</h1>
